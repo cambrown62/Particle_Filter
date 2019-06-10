@@ -13,10 +13,13 @@ class ParticleFilter {
 	float dt;
 	std::vector<float> covariances;
 	float steering_angle;
+	float acceleration;
+	float L;
 
 public:
 	ParticleFilter(int N, float sample_time, std::vector<float> covs, std::vector<float> init_state, std::vector<float> init_cov);
 	//std::vector<Particle> initialize();
 	std::vector<Particle> resample();
-	std::vector<float> estimate_state();
+	void predict();
+	void update();
 };
