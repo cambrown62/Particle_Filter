@@ -3,7 +3,12 @@
 #include <iostream>
 
 struct Particle {
-	std::vector<float> state;
+	//std::vector<float> state;
+	float x;
+	float y;
+	float psi;
+	float v;
+	float beta;
 	float weight;
 };
 
@@ -21,5 +26,5 @@ public:
 	//std::vector<Particle> initialize();
 	std::vector<Particle> resample();
 	void predict();
-	void update();
+	void calc_weights();
 };
