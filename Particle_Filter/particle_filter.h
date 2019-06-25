@@ -16,15 +16,17 @@ class ParticleFilter {
 	int num_particles;
 	std::vector<Particle> particles;
 	float dt;
-	std::vector<float> covariances;
+	std::vector<float> state_covariances;
+	std::vector<float> msmt_covariances;
 	float steering_angle;
 	float acceleration;
 	float L;
+	std::vector<float> measurements;
 
 public:
-	ParticleFilter(int N, float sample_time, std::vector<float> covs, std::vector<float> init_state, std::vector<float> init_cov);
+	ParticleFilter(int N, float sample_time, std::vector<float> state_covs, std::vector<float> msmt_covs, std::vector<float> init_state, std::vector<float> init_cov);
 	//std::vector<Particle> initialize();
-	std::vector<Particle> resample();
+	void resample();
 	void predict();
 	void calc_weights();
 };
