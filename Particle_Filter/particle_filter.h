@@ -18,10 +18,15 @@ class ParticleFilter {
 	float dt;
 	std::vector<float> state_covariances;
 	std::vector<float> msmt_covariances;
+	float L;
+	std::vector<float> state_estimate;
+
+
+	// these are placeholders, they would come from their respective publishers
 	float steering_angle;
 	float acceleration;
-	float L;
 	std::vector<float> measurements;
+	
 
 public:
 	ParticleFilter(int N, float sample_time, std::vector<float> state_covs, std::vector<float> msmt_covs, std::vector<float> init_state, std::vector<float> init_cov);
@@ -29,4 +34,5 @@ public:
 	void resample();
 	void predict();
 	void calc_weights();
+	void estimate_state();
 };

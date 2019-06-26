@@ -73,6 +73,8 @@ void ParticleFilter::calc_weights() {
 	//for our purposes, pretend we only have GPS measurement
 	std::default_random_engine generator;
 
+	float weight_sum = 0;
+
 	for (int i = 0; i < particles.size(); ++i) {
 		// predict x measurement
 		std::normal_distribution<float> x_dist(particles[i].x, msmt_covariances[0]);
@@ -86,6 +88,12 @@ void ParticleFilter::calc_weights() {
 		float x_part = 1 / (sqrt(2 * M_PI * msmt_covariances[0] * msmt_covariances[0])) * exp(-pow(x_msmt_predict - measurements[0], 2) / (2 * msmt_covariances[0] * msmt_covariances[0]);
 		float y_part = 1 / (sqrt(2 * M_PI * msmt_covariances[1] * msmt_covariances[1])) * exp(-pow(y_msmt_predict - measurements[1], 2) / (2 * msmt_covariances[1] * msmt_covariances[1]);
 		particles[i].weight = x_part * y_part;
+		weight_sum += particles[i].weight;
+	}
+
+	//normalize weights
+	for (int i = 0; i <= num_particles - 1; ++i) {
+		particles[i].weight /= weight_sum;
 	}
 
 }
@@ -117,4 +125,15 @@ void ParticleFilter::resample() {
 
 }
 
+void ParticleFilter::estimate_state() {
+	//estimate state with expected value of particles
+	float x_hat = 0;
+	float y_hat = 0;
+	for (int i = 0; i <= num_particles - 1; ++i) {
+		x_hat += (particles[i].x*particles[i].weight);
+		y_hat += (particles[i].y*particles[i].weight);
+	}
+	state_estimate[0] = x_hat;
+	state_estimate[1] = y_hat;
+}
 
